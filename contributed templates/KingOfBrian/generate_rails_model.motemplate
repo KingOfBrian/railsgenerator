@@ -3,14 +3,18 @@
 foreach Relationship noninheritedRelationships do
 $><$comment ***** Print out a relation ID if it's not a to-many.   This will print out too many ID's for many-many. *****$><$
 if !Relationship.isToMany 
-$><$Relationship.name$>:relation <$
+$><$Relationship.name$>:references <$
 endif$><$
 endforeach do
-$><$comment ***** Print out all of the attributes with types.  *****$><$
+$><$
 foreach Attribute noninheritedAttributes do
-$><$if Attribute.attributeType == 100 or Attribute.attributeType == 200$><$Attribute.name$>:integer<$else
-$><$if Attribute.attributeType == 700$><$Attribute.name$>:string<$else
-$><$if Attribute.attributeType == 800$><$Attribute.name$>:boolean<$else
-$><$Attribute.name$>:?<$Attribute.attributeType$><$endif$><$endif$><$endif$> <$
+$><$Attribute.name$>:<$comment ***** Print out all of the attributes with types.  *****$><$
+$><$if Attribute.attributeType == 100 or Attribute.attributeType == 200$>integer<$else
+$><$if Attribute.attributeType == 400$>decimal<$else
+$><$if Attribute.attributeType == 500 or Attribute.attributeType == 600$>float<$else
+$><$if Attribute.attributeType == 700$>string<$else
+$><$if Attribute.attributeType == 800$>boolean<$else
+$><$if Attribute.attributeType == 900$>datetime<$else
+$>Unknown Attribute Type(<$Attribute.attributeType$>)<$endif$><$endif$><$endif$><$endif$><$endif$><$endif$> <$
 endforeach do
 $>

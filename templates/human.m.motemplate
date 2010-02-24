@@ -1,3 +1,4 @@
+<$set FILENAME=<$managedObjectClassName$>.m$><$set MACHINE_FILENAME=_<$managedObjectClassName$>.m$>
 #import "<$managedObjectClassName$>.h"
 
 @implementation <$managedObjectClassName$>

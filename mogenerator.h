@@ -49,4 +49,6 @@
 }
 
 - (NSString*)appSupportFileNamed:(NSString*)fileName_;
+- (NSString*)templateFileDirectory;
+- (NSArray*)templateFiles;
 @end

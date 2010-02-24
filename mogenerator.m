@@ -223,36 +223,63 @@ static MiscMergeEngine* engineWithTemplatePath(NSString *templatePath_) {
 
 NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
 - (NSString*)appSupportFileNamed:(NSString*)fileName_ {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSFileManager *fm = [NSFileManager defaultManager];
+	BOOL isDirectory;
+	
+	NSString *appSupportFile = [[self templateFileDirectory] stringByAppendingPathComponent:fileName_];
+	
+	if ([fm fileExistsAtPath:appSupportFile isDirectory:&isDirectory] && !isDirectory) {
+		return appSupportFile;
+	}
+	
+	NSLog(@"appSupportFileNamed:@\"%@\": file not found", fileName_);
+	exit(EXIT_FAILURE);
+	return nil;
+}
+
+- (NSString*) templateFileDirectory {
+	NSFileManager *fm = [NSFileManager defaultManager];
 	BOOL isDirectory;
 	
 	if (templatePath) {
-		if ([fileManager fileExistsAtPath:templatePath isDirectory:&isDirectory] && isDirectory) {
-			return [templatePath stringByAppendingPathComponent:fileName_];
+		if ([fm fileExistsAtPath:templatePath isDirectory:&isDirectory] && isDirectory) {
+			return templatePath;
 		}
 	} else {
 		NSArray *appSupportDirectories = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask+NSLocalDomainMask, YES);
 		assert(appSupportDirectories);
 		
 		nsenumerate (appSupportDirectories, NSString*, appSupportDirectory) {
-			if ([fileManager fileExistsAtPath:appSupportDirectory isDirectory:&isDirectory]) {
+			if ([fm fileExistsAtPath:appSupportDirectory isDirectory:&isDirectory]) {
 				NSString *appSupportSubdirectory = [appSupportDirectory stringByAppendingPathComponent:ApplicationSupportSubdirectoryName];
 				if (templateGroup) {
 					appSupportSubdirectory = [appSupportSubdirectory stringByAppendingPathComponent:templateGroup];
 				}
-				if ([fileManager fileExistsAtPath:appSupportSubdirectory isDirectory:&isDirectory] && isDirectory) {
-					NSString *appSupportFile = [appSupportSubdirectory stringByAppendingPathComponent:fileName_];
-					if ([fileManager fileExistsAtPath:appSupportFile isDirectory:&isDirectory] && !isDirectory) {
-						return appSupportFile;
-					}
+				if ([fm fileExistsAtPath:appSupportSubdirectory isDirectory:&isDirectory] && isDirectory) {
+					return appSupportSubdirectory;
 				}
 			}
 		}
+		
 	}
 	
-	NSLog(@"appSupportFileNamed:@\"%@\": file not found", fileName_);
+	NSLog(@"templateFiles: Could not locate template files");
 	exit(EXIT_FAILURE);
 	return nil;
+}
+
+- (NSArray*)templateFiles {
+	NSFileManager *fm = [NSFileManager defaultManager];
+		
+	NSMutableArray* templateFiles = [NSMutableArray array];
+	
+	nsenumerate ([fm contentsOfDirectoryAtPath:[self templateFileDirectory] error:NULL], NSString*, path) {
+		if ([[path pathExtension] isEqualToString:@"motemplate"]) {
+			[templateFiles addObject:path];
+		}
+	}
+
+	return templateFiles;
 }
 
 - (void) application: (DDCliApplication *) app
@@ -364,87 +391,85 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
 	int machineFilesGenerated = 0;        
 	int humanFilesGenerated = 0;
 	
-	if (model) {
-		MiscMergeEngine *machineH = engineWithTemplatePath([self appSupportFileNamed:@"machine.h.motemplate"]);
-		assert(machineH);
-		MiscMergeEngine *machineM = engineWithTemplatePath([self appSupportFileNamed:@"machine.m.motemplate"]);
-		assert(machineM);
-		MiscMergeEngine *humanH = engineWithTemplatePath([self appSupportFileNamed:@"human.h.motemplate"]);
-		assert(humanH);
-		MiscMergeEngine *humanM = engineWithTemplatePath([self appSupportFileNamed:@"human.m.motemplate"]);
-		assert(humanM);	
-        
+	NSMutableDictionary *humanToMachineDependent = [NSMutableDictionary dictionary];
+	
+	if (model) {        
 		int entityCount = [[model entities] count];
         
-		if(entityCount == 0){ 
+		if(entityCount == 0) { 
 			printf("No entities found in model. No files will be generated.\n");
 			NSLog(@"the model description is %@.", model);
 		}
-		
-		nsenumerate ([model entities], NSEntityDescription, entity) {
-			NSString *entityClassName = [entity managedObjectClassName];
-            
-			if ([entityClassName isEqualToString:@"NSManagedObject"] ||
-				[entityClassName isEqualToString:gCustomBaseClass]){
-				ddprintf(@"skipping entity %@ because it doesn't use a custom subclass.\n", 
-                         entityClassName);
-				continue;
-			}
+				
+		nsenumerate ([self templateFiles], NSString, templateFile) {
+			MiscMergeEngine *engine = engineWithTemplatePath([self appSupportFileNamed:templateFile]);
+			assert(engine);	
+			// Clear out some globals
+			[engine removeGlobalValueForKey:@"FILENAME"];
+			[engine removeGlobalValueForKey:@"MACHINE_FILENAME"];
 			
-			NSString *generatedMachineH = [machineH executeWithObject:entity sender:nil];
-			NSString *generatedMachineM = [machineM executeWithObject:entity sender:nil];
-			NSString *generatedHumanH = [humanH executeWithObject:entity sender:nil];
-			NSString *generatedHumanM = [humanM executeWithObject:entity sender:nil];
 			
-			BOOL machineDirtied = NO;
-			
-			NSString *machineHFileName = [machineDir stringByAppendingPathComponent:
-                [NSString stringWithFormat:@"_%@.h", entityClassName]];
-			if (![fm regularFileExistsAtPath:machineHFileName] || ![generatedMachineH isEqualToString:[NSString stringWithContentsOfFile:machineHFileName]]) {
-				//	If the file doesn't exist or is different than what we just generated, write it out.
-				[generatedMachineH writeToFile:machineHFileName atomically:NO];
-				machineDirtied = YES;
-				machineFilesGenerated++;
+			nsenumerate ([model entities], NSEntityDescription, entity) {
+				NSString *entityClassName = [entity managedObjectClassName];
+
+				// Any class that doesn't have a custom subclass will be ignored
+				if ([entityClassName isEqualToString:@"NSManagedObject"] ||
+					[entityClassName isEqualToString:gCustomBaseClass]){
+					ddprintf(@"skipping entity %@ because it doesn't use a custom subclass.\n", 
+							 entityClassName);
+					continue;
+				}
+				
+				NSString *generated = [engine executeWithObject:entity sender:nil];
+
+				NSString* filename      = [engine globalValueForKey:@"FILENAME"];
+				NSString* machineFilename = [engine globalValueForKey:@"MACHINE_FILENAME"];
+				// It's a human file if MACHINE_FILENAME was specified
+				BOOL humanFile = machineFilename != nil;
+
+				if (humanFile) {
+					// Save machine dependent files for touching later
+					[humanToMachineDependent setObject:machineFilename forKey:filename];
+				}
+				
+				BOOL wroteGenerated = NO;
+				if (![fm regularFileExistsAtPath:filename]) {
+					[generated writeToFile:filename atomically:NO];
+					if (humanFile) {
+						humanFilesGenerated++;
+					} else {
+						machineFilesGenerated++;
+					}
+					wroteGenerated = YES;
+				} else { // File does exist
+					if (!humanFile && ![generated isEqualToString:[NSString stringWithContentsOfFile:filename]]) {
+						//	If the generated file is different than what we just generated, write it out.
+						[generated writeToFile:filename atomically:NO];
+						machineFilesGenerated++;
+						wroteGenerated = YES;
+					}
+				}
+				
+				if (wroteGenerated) {
+					[mfileContent appendFormat:@"#include \"%@\"\n", [filename lastPathComponent]];
+				}
 			}
-			NSString *machineMFileName = [machineDir stringByAppendingPathComponent:
-                [NSString stringWithFormat:@"_%@.m", entityClassName]];
-			if (![fm regularFileExistsAtPath:machineMFileName] || ![generatedMachineM isEqualToString:[NSString stringWithContentsOfFile:machineMFileName]]) {
-				//	If the file doesn't exist or is different than what we just generated, write it out.
-				[generatedMachineM writeToFile:machineMFileName atomically:NO];
-				machineDirtied = YES;
-				machineFilesGenerated++;
-			}
-			NSString *humanHFileName = [humanDir stringByAppendingPathComponent:
-                [NSString stringWithFormat:@"%@.h", entityClassName]];
-			if ([fm regularFileExistsAtPath:humanHFileName]) {
-				if (machineDirtied)
-					[fm touchPath:humanHFileName];
-			} else {
-				[generatedHumanH writeToFile:humanHFileName atomically:NO];
-				humanFilesGenerated++;
-			}
-			NSString *humanMFileName = [humanDir stringByAppendingPathComponent:
-                [NSString stringWithFormat:@"%@.m", entityClassName]];
-			NSString *humanMMFileName = [humanDir stringByAppendingPathComponent:
-                [NSString stringWithFormat:@"%@.mm", entityClassName]];
-			if (![fm regularFileExistsAtPath:humanMFileName] && [fm regularFileExistsAtPath:humanMMFileName]) {
-				//	Allow .mm human files as well as .m files.
-				humanMFileName = humanMMFileName;
-			}
-			
-			if ([fm regularFileExistsAtPath:humanMFileName]) {
-				if (machineDirtied)
-					[fm touchPath:humanMFileName];
-			} else {
-				[generatedHumanM writeToFile:humanMFileName atomically:NO];
-				humanFilesGenerated++;
-			}
-			
-			[mfileContent appendFormat:@"#include \"%@\"\n#include \"%@\"\n",
-                [humanMFileName lastPathComponent], [machineMFileName lastPathComponent]];
 		}
-	}
-	
+		
+		nsenumerate ([humanToMachineDependent allKeys], NSString, filename) {
+			NSString *machineFilename = [humanToMachineDependent objectForKey:filename];
+
+			// If the machine file is more recent, touch the human file to ensure rebuilding
+			NSDate* humanModifiedDate = 
+			[[fm attributesOfItemAtPath:filename error:NULL] fileModificationDate];
+			NSDate* machineModifiedDate = 
+			[[fm attributesOfItemAtPath:machineFilename error:NULL] fileModificationDate];
+			
+			if ([machineModifiedDate compare:humanModifiedDate] == NSOrderedDescending) {
+				[fm touchPath:filename];
+			}
+		}
+	}	
 	if (tempMOMPath) {
 		[fm removeFileAtPath:tempMOMPath handler:nil];
 	}

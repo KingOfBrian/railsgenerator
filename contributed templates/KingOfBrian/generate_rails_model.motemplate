@@ -1,0 +1,16 @@
+<$set FILENAME=generate_<$managedObjectClassName$>_model.sh$>
+./script/generate model <$managedObjectClassName$> <$
+foreach Relationship noninheritedRelationships do
+$><$comment ***** Print out a relation ID if it's not a to-many.   This will print out too many ID's for many-many. *****$><$
+if !Relationship.isToMany 
+$><$Relationship.name$>:relation <$
+endif$><$
+endforeach do
+$><$comment ***** Print out all of the attributes with types.  *****$><$
+foreach Attribute noninheritedAttributes do
+$><$if Attribute.attributeType == 100 or Attribute.attributeType == 200$><$Attribute.name$>:integer<$else
+$><$if Attribute.attributeType == 700$><$Attribute.name$>:string<$else
+$><$if Attribute.attributeType == 800$><$Attribute.name$>:boolean<$else
+$><$Attribute.name$>:?<$Attribute.attributeType$><$endif$><$endif$><$endif$> <$
+endforeach do
+$>

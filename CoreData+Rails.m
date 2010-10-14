@@ -19,7 +19,11 @@
 }
 
 - (NSString*) railsClassName {
-	return [[[self railsClass] camelize] titleize];
+	NSString *cstring = [self railsClass];
+	NSString *cam = [cstring camelize];
+	NSString *cap = [cam capitalize];
+	return cap;
+//	return [[[self railsClass] camelize] capitalizedString];
 }
 - (NSString*) railsClassNameUnderscore {
 	return [[[self railsClass] decapitalize] underscore];
@@ -75,7 +79,7 @@
 		case NSStringAttributeType:
 		case NSBooleanAttributeType:
 		case NSDateAttributeType:
-			return [NSString stringWithFormat:@"attr_accesible :%@", [self railsName]];
+			return [NSString stringWithFormat:@"attr_accessible :%@", [self railsName]];
 		case NSBinaryDataAttributeType:
 		case NSTransformableAttributeType:
 //		case NSObjectIDAttributeType:
@@ -173,8 +177,13 @@
 	NSMutableString *tailDeclaration = [NSMutableString stringWithFormat:@":%@", fieldName];
 	
 	if (!classMatchesConvention) [tailDeclaration appendFormat:@", :class_name => \"%@\"", remoteEntityCapital];
-	if ([self deleteRule] == NSNullifyDeleteRule) [tailDeclaration appendFormat:@", :dependent => :nullify"];
-	if ([self deleteRule] == NSCascadeDeleteRule) [tailDeclaration appendFormat:@", :dependent => :destroy_all"];
+	if ([self deleteRule] == NSNullifyDeleteRule &&
+		// Ignore nullify for belongs_to
+		!(![self isToMany] && ([inverseRelationship isToMany] || [self railsBelongsTo]))) {
+		[tailDeclaration appendFormat:@", :dependent => :nullify"];
+	} else if ([self deleteRule] == NSCascadeDeleteRule) {
+		[tailDeclaration appendFormat:@", :dependent => :destroy"];
+	}
 	
 	if ([self isToMany]) {
 		if ([inverseRelationship isToMany]) {

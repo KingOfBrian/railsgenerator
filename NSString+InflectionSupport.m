@@ -106,6 +106,10 @@ static NSMutableDictionary *cachedCamelized;
     return [[[self substringToIndex:1] lowercaseString] stringByAppendingString:[self substringFromIndex:1]];
 }
 
+- (NSString *)capitalize {
+    return [[[self substringToIndex:1] uppercaseString] stringByAppendingString:[self substringFromIndex:1]];
+}
+
 - (NSString *)toClassName {
 	NSString *result = [self camelize];
 	return [result stringByReplacingCharactersInRange:NSMakeRange(0,1) 
@@ -116,6 +120,7 @@ static ActiveSupportInflector *inflector = nil;
 - (NSString *)singularize {
 	if (!inflector) {
 		inflector = [[ActiveSupportInflector alloc] init];
+		[inflector addInflectionsFromFile:[[NSBundle mainBundle] pathForResource:@"ActiveSupportInflector" ofType:@"plist"]];
 	}
 	return [inflector singularize:self];
 }

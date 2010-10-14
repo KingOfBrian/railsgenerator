@@ -1,6 +1,6 @@
 <$set DIRECTORY=db/migrate$>
-<$set FILENAME=<$timestamp$><$migrationCount$>_<$railsClassNameUnderscore$>.rb$>
-class Create<$railsClassName$> < ActiveRecord::Migration
+<$set FILENAME=<$timestamp$><$migrationCount$>_create_<$railsClassNameUnderscore.pluralize$>.rb$>
+class Create<$railsClassName.pluralize$> < ActiveRecord::Migration
   def self.up
     create_table :<$railsTableName.pluralize$> do |t|
 <$foreach Attribute noninheritedAttributes do$><$if Attribute.railsModelString$>      <$Attribute.railsMigrationString$>

@@ -1,8 +1,8 @@
 <$set DIRECTORY=app/controllers$>
-<$set FILENAME=<$railsControllerNameUnderscore$>.rb$>
+<$set FILENAME=<$railsClassNameUnderscore.pluralize$>_controller.rb$>
 
 <$set SINGULAR=@<$railsClassNameUnderscore$>$>
-<$set PLURAL=@<$railsClassNameUnderscore.pluralize$>
+<$set PLURAL=@<$railsClassNameUnderscore.pluralize$>$>
 <$set CLASSNAME=<$railsClassName.pluralize$>Controller$>
 
 class <$CLASSNAME$> < ApplicationController

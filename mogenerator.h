@@ -14,6 +14,7 @@
 #import "FoundationAdditions.h"
 #import "nsenumerate.h"
 #import "NSString+MiscAdditions.h"
+#import "NSString+InflectionSupport.h"
 #import "DDCommandLineInterface.h"
 
 

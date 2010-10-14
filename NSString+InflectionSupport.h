@@ -36,7 +36,7 @@
  * Return a copy of the string suitable for displaying in a title. Each word is downcased, with the first letter upcased.
  */
 - (NSString *)titleize;
-
+- (NSString *)capitalize;
 - (NSString *)decapitalize;
 
 /**

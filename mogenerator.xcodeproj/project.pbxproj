@@ -171,6 +171,7 @@
 		86D348A61260385D00D71A94 /* model.rb.motemplate */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model.rb.motemplate; sourceTree = "<group>"; };
 		86D348A71260385D00D71A94 /* migration.rb.motemplate */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = migration.rb.motemplate; sourceTree = "<group>"; };
 		86D348A81260385D00D71A94 /* join_migration.rb.motemplate */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = join_migration.rb.motemplate; sourceTree = "<group>"; };
+		86D349B51267765C00D71A94 /* controller.rb.motemplate */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = controller.rb.motemplate; sourceTree = "<group>"; };
 		8DD76FA10486AA7600D96B5E /* mogenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mogenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -354,6 +355,7 @@
 		86D348A51260384700D71A94 /* templates */ = {
 			isa = PBXGroup;
 			children = (
+				86D349B51267765C00D71A94 /* controller.rb.motemplate */,
 				86D348A61260385D00D71A94 /* model.rb.motemplate */,
 				86D348A71260385D00D71A94 /* migration.rb.motemplate */,
 				86D348A81260385D00D71A94 /* join_migration.rb.motemplate */,

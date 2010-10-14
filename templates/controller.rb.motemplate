@@ -1,0 +1,107 @@
+<$set DIRECTORY=app/controllers$>
+<$set FILENAME=<$railsControllerNameUnderscore$>.rb$>
+
+<$set SINGULAR=@<$railsClassNameUnderscore$>$>
+<$set PLURAL=@<$railsClassNameUnderscore.pluralize$>
+<$set CLASSNAME=<$railsClassName.pluralize$>Controller$>
+
+class <$CLASSNAME$> < ApplicationController
+  # GET /<$railsTableName$>
+  # GET /<$railsTableName$>.json
+  # GET /<$railsTableName$>.xml
+  def index
+    <$PLURAL$> = <$railsClassName$>.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml  => <$PLURAL$> }
+      format.json { render :json => <$PLURAL$> }
+    end
+  end
+
+  # GET /<$railsTableName$>/1
+  # GET /<$railsTableName$>/1.json
+  # GET /<$railsTableName$>/1.xml
+  def show
+    <$SINGULAR$> = <$railsClassName$>.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml  => <$SINGULAR$> }
+      format.json { render :json => <$SINGULAR$> }	  
+    end
+  end
+
+  # GET /<$railsTableName$>/new
+  # GET /<$railsTableName$>/new.xml
+  # GET /<$railsTableName$>/new.json
+  def new
+    <$SINGULAR$> = <$railsClassName$>.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml  => <$SINGULAR$> }
+      format.json { render :json => <$SINGULAR$> }	  
+    end
+  end
+
+  # GET /<$railsTableName$>/1/edit
+  def edit
+    <$SINGULAR$> = <$railsClassName$>.find(params[:id])
+  end
+
+  # POST /<$railsTableName$>
+  # POST /<$railsTableName$>.xml
+  # POST /<$railsTableName$>.json
+  def create
+    <$SINGULAR$> = <$railsClassName$>.new(params[:<$railsClassNameUnderscore$>])
+
+    respond_to do |format|
+      if <$SINGULAR$>.save
+        flash[:notice] = '<$railsClassName$> was successfully created.'
+        format.html { redirect_to(<$SINGULAR$>) }
+        format.xml  { render :xml => <$SINGULAR$>, :status => :created, :location => <$SINGULAR$> }
+        format.json { render :json => <$SINGULAR$>, :status => :created, :location => <$SINGULAR$> }		
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => <$SINGULAR$>.errors, :status => :unprocessable_entity }
+        format.json { render :json => <$SINGULAR$>.errors, :status => :unprocessable_entity }		
+      end
+    end
+  end
+
+  # PUT /<$railsTableName$>/1
+  # PUT /<$railsTableName$>/1.xml
+  # PUT /<$railsTableName$>/1.json
+  def update
+    <$SINGULAR$> = <$railsClassName$>.find(params[:id])
+
+    respond_to do |format|
+      if <$SINGULAR$>.update_attributes(params[:<$railsClassNameUnderscore$>])
+        flash[:notice] = '<$railsClassName$> was successfully updated.'
+        format.html { redirect_to(<$SINGULAR$>) }
+        format.xml  { head :ok }
+        format.json { head :ok }		
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml  => <$SINGULAR$>.errors, :status => :unprocessable_entity }
+        format.json { render :json => <$SINGULAR$>.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /<$railsTableName$>/1
+  # DELETE /<$railsTableName$>/1.xml
+  # DELETE /<$railsTableName$>/1.json  
+  def destroy
+    <$SINGULAR$> = <$railsClassName$>.find(params[:id])
+    <$SINGULAR$>.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(deals_url) }
+      format.xml  { head :ok }
+      format.json { head :ok }
+    end
+  end
+end
+

@@ -189,7 +189,7 @@ NSString *ApplicationSupportSubdirectoryName = @"mogenerator";
 	[dateFormatter setDateFormat:@"yyyyMMddHHmmss"];
 	NSString *timestamp = [dateFormatter stringFromDate:[NSDate date]];
 	
-	NSArray *entityTemplates = [NSArray arrayWithObjects:@"migration.rb.motemplate", @"model.rb.motemplate", nil];
+	NSArray *entityTemplates = [NSArray arrayWithObjects:@"migration.rb.motemplate", @"model.rb.motemplate", @"controller.rb.motemplate", nil];
 	for (NSString *templateFile in entityTemplates) {
 		MiscMergeEngine *engine = engineWithTemplatePath([self appSupportFileNamed:templateFile]);
 		assert(engine);	

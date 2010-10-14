@@ -52,6 +52,11 @@
 		79D2BFED0ACFB51A00F3F141 /* NSScanner+MiscMerge.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D2BF9E0ACFB51A00F3F141 /* NSScanner+MiscMerge.m */; };
 		79D2BFEF0ACFB51A00F3F141 /* NSString+MiscAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D2BFA00ACFB51A00F3F141 /* NSString+MiscAdditions.m */; };
 		79D2C05A0ACFBCB500F3F141 /* FoundationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D2C0580ACFBCB500F3F141 /* FoundationAdditions.m */; };
+		86D34832126032F200D71A94 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D34827126032F200D71A94 /* RegexKitLite.m */; };
+		86D34833126032F200D71A94 /* ActiveSupportInflector.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D3482B126032F200D71A94 /* ActiveSupportInflector.m */; };
+		86D34834126032F200D71A94 /* NSString+InflectionSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D3482D126032F200D71A94 /* NSString+InflectionSupport.m */; };
+		86D34836126032F200D71A94 /* CoreData+Rails.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D34831126032F200D71A94 /* CoreData+Rails.m */; };
+		86D348471260357200D71A94 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D348461260357200D71A94 /* libicucore.dylib */; };
 		8DD76F9A0486AA7600D96B5E /* mogenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* mogenerator.m */; settings = {ATTRIBUTES = (); }; };
 		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -153,6 +158,19 @@
 		79D2C00E0ACFB81200F3F141 /* nsenumerate.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = nsenumerate.h; sourceTree = "<group>"; };
 		79D2C0570ACFBCB500F3F141 /* FoundationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FoundationAdditions.h; sourceTree = "<group>"; };
 		79D2C0580ACFBCB500F3F141 /* FoundationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = FoundationAdditions.m; sourceTree = "<group>"; };
+		86D34827126032F200D71A94 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
+		86D34828126032F200D71A94 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
+		86D34829126032F200D71A94 /* ActiveSupportInflector.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = ActiveSupportInflector.plist; sourceTree = "<group>"; };
+		86D3482A126032F200D71A94 /* ActiveSupportInflector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveSupportInflector.h; sourceTree = "<group>"; };
+		86D3482B126032F200D71A94 /* ActiveSupportInflector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveSupportInflector.m; sourceTree = "<group>"; };
+		86D3482C126032F200D71A94 /* NSString+InflectionSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+InflectionSupport.h"; sourceTree = "<group>"; };
+		86D3482D126032F200D71A94 /* NSString+InflectionSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+InflectionSupport.m"; sourceTree = "<group>"; };
+		86D34830126032F200D71A94 /* CoreData+Rails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoreData+Rails.h"; sourceTree = "<group>"; };
+		86D34831126032F200D71A94 /* CoreData+Rails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreData+Rails.m"; sourceTree = "<group>"; };
+		86D348461260357200D71A94 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		86D348A61260385D00D71A94 /* model.rb.motemplate */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model.rb.motemplate; sourceTree = "<group>"; };
+		86D348A71260385D00D71A94 /* migration.rb.motemplate */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = migration.rb.motemplate; sourceTree = "<group>"; };
+		86D348A81260385D00D71A94 /* join_migration.rb.motemplate */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = join_migration.rb.motemplate; sourceTree = "<group>"; };
 		8DD76FA10486AA7600D96B5E /* mogenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mogenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -163,6 +181,7 @@
 			files = (
 				8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */,
 				79D2BF3F0ACFB25B00F3F141 /* CoreData.framework in Frameworks */,
+				86D348471260357200D71A94 /* libicucore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +196,7 @@
 				55200E8E0C49FEEA00018A42 /* ddcli */,
 				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
+				86D348461260357200D71A94 /* libicucore.dylib */,
 			);
 			name = mogenerator;
 			sourceTree = "<group>";
@@ -184,6 +204,10 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				86D348A51260384700D71A94 /* templates */,
+				86D34830126032F200D71A94 /* CoreData+Rails.h */,
+				86D34831126032F200D71A94 /* CoreData+Rails.m */,
+				86D34826126032F200D71A94 /* Inflection */,
 				08FB7796FE84155DC02AAC07 /* mogenerator.m */,
 				79A586510E48E8B400474C35 /* mogenerator.h */,
 				79D2C00E0ACFB81200F3F141 /* nsenumerate.h */,
@@ -313,6 +337,30 @@
 			path = MiscMerge;
 			sourceTree = "<group>";
 		};
+		86D34826126032F200D71A94 /* Inflection */ = {
+			isa = PBXGroup;
+			children = (
+				86D34827126032F200D71A94 /* RegexKitLite.m */,
+				86D34828126032F200D71A94 /* RegexKitLite.h */,
+				86D34829126032F200D71A94 /* ActiveSupportInflector.plist */,
+				86D3482A126032F200D71A94 /* ActiveSupportInflector.h */,
+				86D3482B126032F200D71A94 /* ActiveSupportInflector.m */,
+				86D3482C126032F200D71A94 /* NSString+InflectionSupport.h */,
+				86D3482D126032F200D71A94 /* NSString+InflectionSupport.m */,
+			);
+			name = Inflection;
+			sourceTree = "<group>";
+		};
+		86D348A51260384700D71A94 /* templates */ = {
+			isa = PBXGroup;
+			children = (
+				86D348A61260385D00D71A94 /* model.rb.motemplate */,
+				86D348A71260385D00D71A94 /* migration.rb.motemplate */,
+				86D348A81260385D00D71A94 /* join_migration.rb.motemplate */,
+			);
+			path = templates;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -400,6 +448,10 @@
 				55200E970C49FEEA00018A42 /* DDCliUtil.m in Sources */,
 				55200E980C49FEEA00018A42 /* DDGetoptLongParser.m in Sources */,
 				55200F9D0C4A2CA800018A42 /* DDCliParseException.m in Sources */,
+				86D34832126032F200D71A94 /* RegexKitLite.m in Sources */,
+				86D34833126032F200D71A94 /* ActiveSupportInflector.m in Sources */,
+				86D34834126032F200D71A94 /* NSString+InflectionSupport.m in Sources */,
+				86D34836126032F200D71A94 /* CoreData+Rails.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,7 +502,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
 			name = Debug;
 		};
@@ -463,7 +515,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 			};
 			name = Release;
 		};

@@ -1,0 +1,22 @@
+<$set DIRECTORY=db/migrate$>
+<$set FILENAME=<$timestamp$><$migrationCount$>_<$railsClassNameUnderscore$>.rb$>
+class Create<$railsClassName$> < ActiveRecord::Migration
+  def self.up
+    create_table :<$railsTableName.pluralize$> do |t|
+<$foreach Attribute noninheritedAttributes do$><$if Attribute.railsModelString$>      <$Attribute.railsMigrationString$>
+<$endif$><$endforeach do$>
+<$foreach Relationship noninheritedRelationships do$><$if Relationship.railsModelString$>      <$Relationship.railsMigrationString$>
+<$endif$><$endforeach do$>
+      t.timestamps
+    end 
+
+<$foreach Attribute noninheritedAttributes do$><$if Attribute.railsMigrationIndexString$>    <$Attribute.railsMigrationIndexString$>
+<$endif$><$endforeach do$>
+<$foreach Relationship noninheritedRelationships do$><$if Relationship.railsMigrationIndexString$>    <$Relationship.railsMigrationIndexString$>
+<$endif$><$endforeach do$>
+  end
+  def self.down
+    drop_table :<$railsTableName$>
+  end
+end
+

@@ -1,0 +1,11 @@
+<$set DIRECTORY=app/models$>
+<$set FILENAME=<$railsClassNameUnderscore$>.rb$>
+
+class <$railsClassName$> < ActiveRecord::Base
+<$foreach Attribute noninheritedAttributes do$><$if Attribute.railsModelString$>  <$Attribute.railsModelString$>
+<$endif$><$endforeach do$>
+
+<$foreach Relationship noninheritedRelationships do$><$if Relationship.railsModelString$>  <$Relationship.railsModelString$>
+<$endif$><$endforeach do$>
+end
+

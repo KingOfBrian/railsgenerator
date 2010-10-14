@@ -16,23 +16,6 @@
 #import "NSString+MiscAdditions.h"
 #import "DDCommandLineInterface.h"
 
-@interface NSEntityDescription (customBaseClass)
-- (BOOL)hasCustomSuperentity;
-- (NSString*)customSuperentity;
-- (void)_processPredicate:(NSPredicate*)predicate_ bindings:(NSMutableArray*)bindings_;
-- (NSArray*)prettyFetchRequests;
-@end
-
-@interface NSAttributeDescription (scalarAttributeType)
-- (BOOL)hasScalarAttributeType;
-- (NSString*)scalarAttributeType;
-- (BOOL)hasDefinedAttributeType;
-- (NSString*)objectAttributeType;
-@end
-
-@interface NSString (camelCaseString)
-- (NSString*)camelCaseString;
-@end
 
 @interface MOGeneratorApp : NSObject <DDCliApplicationDelegate> {
 	NSString				*tempMOMPath;

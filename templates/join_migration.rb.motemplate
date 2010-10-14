@@ -1,0 +1,20 @@
+<$set DIRECTORY=db/migrate$>
+<$set FILENAME=<$timestamp$><$migrationCount$>_<$entity.railsClassNameUnderscore$>_<$inverseRelationship.entity.railsClassNameUnderscore$>.rb$>
+<$set TABLENAME=<$entity.railsTableName$>_<$inverseRelationship.entity.railsTableName$>$>
+class Create<$entity.railsClassName$><$inverseRelationship.entity.railsClassName$> < ActiveRecord::Migration
+  def self.up
+    create_table :<$TABLENAME$>, :id => false do |t|
+      t.references :<$railsName$>
+      t.references :<$inverseRelationship.railsName$>
+    end 
+    add_index :<$TABLENAME$>, [:<$railsName$>_id, :<$inverseRelationship.railsName$>_id]
+    add_index :<$TABLENAME$>, [:<$inverseRelationship.railsName$>_id, :<$railsName$>_id]	
+
+  end
+  def self.down
+    drop_table :<$TABLENAME$>
+  end
+  
+  
+end
+
